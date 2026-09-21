@@ -1,0 +1,22 @@
+[package]
+name = "wiki-tools"
+version = "0.1.0"
+edition = "2024"
+
+[profile.release]
+opt-level = 3
+debug = 0
+strip = "symbols"
+debug-assertions = false
+overflow-checks = false
+lto = "fat"
+codegen-units = 1
+panic = "abort"
+incremental = false
+
+[dependencies]
+csv = { version = "1.4.0", default-features = false }
+futures = { version = "0.3.34", features = ["alloc"], default-features = false }
+serde = { version="1.0.229", features = ["derive"], default-features = false }
+thiserror = { version = "2.0.20", features = ["std"], default-features = false }
+tokio = { version = "1.53.1", features = ["fs", "macros", "rt-multi-thread"], default-features = false }
