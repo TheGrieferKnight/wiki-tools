@@ -49,7 +49,10 @@ async fn move_category(
                 .join("\n");
 
             match fs::write(&destination, cleaned).await {
-                Ok(()) => Ok(()),
+                Ok(()) => {
+                    fs::remove_file(source).await?;
+                    Ok(())
+                },
                 Err(error) => {
                     eprintln!(
                         "Failed to write '{}' to '{}': {}",
