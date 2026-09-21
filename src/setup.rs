@@ -5,19 +5,6 @@ use tokio::fs;
 
 use crate::constants::{COMMON, GENERAL, GRAPHICS, SOUND};
 
-async fn move_file(source: &Path, destination: &Path) -> std::io::Result<()> {
-    match fs::rename(source, destination).await {
-        Ok(()) => Ok(()),
-        Err(rename_error) => match fs::copy(source, destination).await {
-            Ok(_) => {
-                fs::remove_file(source).await?;
-                Ok(())
-            }
-            Err(_) => Err(rename_error),
-        },
-    }
-}
-
 async fn move_category(
     source_dir: &Path,
     destination_root: &Path,
@@ -33,11 +20,29 @@ async fn move_category(
         let destination = destination_dir.join(filename);
 
         async move {
-            match move_file(&source, &destination).await {
-                Ok(()) => Ok(()),
+            let source_string = fs::read_to_string(&source).await?;
+
+            let mut lines = source_string.lines();
+
+            let header = lines
+                .next()
+                .unwrap_or("")
+                .strip_suffix(',')
+                .unwrap_or("");
+
+            let cleaned = std::iter::once(header)
+                .chain(lines)
+                .collect::<Vec<_>>()
+                .join("\n");
+
+            match fs::write(&destination, cleaned).await {
+                Ok(()) => {
+                    fs::remove_file(source).await?;
+                    Ok(())
+                },
                 Err(error) => {
                     eprintln!(
-                        "Failed to move '{}' to '{}': {}",
+                        "Failed to write '{}' to '{}': {}",
                         source.display(),
                         destination.display(),
                         error
@@ -71,6 +76,7 @@ pub async fn setup_csv() -> std::io::Result<()> {
         move_category(source_dir, destination_root, "general", GENERAL).await?;
         move_category(source_dir, destination_root, "graphics", GRAPHICS).await?;
         move_category(source_dir, destination_root, "sound", SOUND).await?;
+        println!("Completed setup successfully.");
     } else {
         println!("Skipping setup, as there are no files in {}", source_dir.to_string_lossy());
     }
