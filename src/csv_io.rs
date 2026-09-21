@@ -1,7 +1,7 @@
 use crate::error::AppError;
 use crate::models::common::{atk_param_pc::AtkParamPc, bullet::Bullet, magic::Magic};
 use crate::records::{Param, Record, SearchField};
-use crate::types::traits::Searchable;
+use crate::traits::Searchable;
 
 fn load_record<T>(file_name: &str, search_field: &SearchField) -> Result<Option<T>, csv::Error>
 where
