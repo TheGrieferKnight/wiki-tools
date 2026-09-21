@@ -5,19 +5,6 @@ use tokio::fs;
 
 use crate::constants::{COMMON, GENERAL, GRAPHICS, SOUND};
 
-async fn move_file(source: &Path, destination: &Path) -> std::io::Result<()> {
-    match fs::rename(source, destination).await {
-        Ok(()) => Ok(()),
-        Err(rename_error) => match fs::copy(source, destination).await {
-            Ok(_) => {
-                fs::remove_file(source).await?;
-                Ok(())
-            }
-            Err(_) => Err(rename_error),
-        },
-    }
-}
-
 async fn move_category(
     source_dir: &Path,
     destination_root: &Path,
