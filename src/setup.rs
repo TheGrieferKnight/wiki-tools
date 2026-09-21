@@ -33,11 +33,26 @@ async fn move_category(
         let destination = destination_dir.join(filename);
 
         async move {
-            match move_file(&source, &destination).await {
+            let source_string = fs::read_to_string(&source).await?;
+
+            let mut lines = source_string.lines();
+
+            let header = lines
+                .next()
+                .unwrap_or("")
+                .strip_suffix(',')
+                .unwrap_or("");
+
+            let cleaned = std::iter::once(header)
+                .chain(lines)
+                .collect::<Vec<_>>()
+                .join("\n");
+
+            match fs::write(&destination, cleaned).await {
                 Ok(()) => Ok(()),
                 Err(error) => {
                     eprintln!(
-                        "Failed to move '{}' to '{}': {}",
+                        "Failed to write '{}' to '{}': {}",
                         source.display(),
                         destination.display(),
                         error
