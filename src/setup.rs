@@ -86,6 +86,7 @@ pub async fn setup_csv() -> std::io::Result<()> {
         move_category(source_dir, destination_root, "general", GENERAL).await?;
         move_category(source_dir, destination_root, "graphics", GRAPHICS).await?;
         move_category(source_dir, destination_root, "sound", SOUND).await?;
+        println!("Completed setup successfully.");
     } else {
         println!("Skipping setup, as there are no files in {}", source_dir.to_string_lossy());
     }
