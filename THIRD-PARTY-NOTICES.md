@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-This distribution includes the following third-party component.
+This application includes the following third-party component.
 
 ## Graphviz
 
