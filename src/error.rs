@@ -10,6 +10,9 @@ pub enum AppError {
     #[error("I/O error: {0}")]
     Io(#[from] std::io::Error),
 
+    #[error("Error when trying to convert magic.dot: {exit_status}")]
+    ExitStatusError{ exit_status: std::process::ExitStatus },
+
     #[error("no {record_type} record matched {field}")]
     NotFound {
         record_type: &'static str,
