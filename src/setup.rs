@@ -68,7 +68,7 @@ async fn directory_is_empty(path: &Path) -> std::io::Result<bool> {
 }
 
 pub async fn setup_csv() -> std::io::Result<()> {
-    let source_dir = Path::new("./exported_csv");
+    let source_dir = Path::new("./exported-csv");
     let destination_root = Path::new("./csv");
 
     if !directory_is_empty(source_dir).await? {

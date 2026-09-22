@@ -50,6 +50,25 @@ async fn run() -> Result<(), AppError> {
 
     println!("Spell has been found and processed.");
 
+    let output = if cfg!(target_os = "windows") {
+        std::process::Command::new("cmd")
+            .args(["/C", ".\\tools.\\graphviz\\windows-x64\\dot.exe -Tsvg magic.dot -o magic.svg"])
+            .output()
+            .expect("failed to execute process")
+    } else {
+        std::process::Command::new("sh")
+            .arg("-c")
+            .arg("dot -Tsvg magic.dot -o magic.svg")
+            .output()
+            .expect("failed to execute process")
+    };
+
+    if !output.status.success() {
+        return Err(AppError::ExitStatusError { exit_status: output.status })
+    }
+
+    println!("Successfully converted magic.dot to magic.svg");
+
     Ok(())
 }
 
@@ -76,6 +95,25 @@ async fn run() -> Result<(), AppError> {
 
 
     println!("Spell has been found and processed.");
+
+    let output = if cfg!(target_os = "windows") {
+        std::process::Command::new("cmd")
+            .args(["/C", ".\\tools\\graphviz\\windows-x64\\dot.exe -Tsvg magic.dot -o magic.svg"])
+            .output()
+            .expect("failed to execute process")
+    } else {
+        std::process::Command::new("sh")
+            .arg("-c")
+            .arg("dot -Tsvg magic.dot -o magic.svg")
+            .output()
+            .expect("failed to execute process")
+    };
+
+    if !output.status.success() {
+        return Err(AppError::ExitStatusError { exit_status: output.status })
+    }
+
+    println!("Successfully converted magic.dot to magic.svg");
 
     Ok(())
 }
