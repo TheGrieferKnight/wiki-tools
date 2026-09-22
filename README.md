@@ -6,12 +6,10 @@ A CLI Tool that lets you render Sorceries and Incantations from Elden Ring as ea
 
 Prerequisites:
 
-- A folder of all Params exported using Smithbox called /exported_csv in the directory the tool is ran in.
+- A folder of all Params exported using Smithbox called /exported-csv in the directory the tool is ran in.
 
-To create viewable SVG versions of the graphs install Graphviz, specifically the command-line tools (`choco install graphviz`)
+On Linux:
+To create viewable SVG versions of the graphs install Graphviz , specifically the command-line tools.
 
-Then run
-
-```sh
-dot -Tsvg magic.dot -o magic.svg
-```
+On Windows:
+Will automatically create SVGs via included binary.
