@@ -24,11 +24,8 @@ async fn move_category(
 
             let mut lines = source_string.lines();
 
-            let header = lines
-                .next()
-                .unwrap_or("")
-                .strip_suffix(',')
-                .unwrap_or("");
+            let header = lines.next().unwrap_or("");
+            let header = header.strip_suffix(',').unwrap_or(header);
 
             let cleaned = std::iter::once(header)
                 .chain(lines)
@@ -39,7 +36,7 @@ async fn move_category(
                 Ok(()) => {
                     fs::remove_file(source).await?;
                     Ok(())
-                },
+                }
                 Err(error) => {
                     eprintln!(
                         "Failed to write '{}' to '{}': {}",
@@ -78,7 +75,10 @@ pub async fn setup_csv() -> std::io::Result<()> {
         move_category(source_dir, destination_root, "sound", SOUND).await?;
         println!("Completed setup successfully.");
     } else {
-        println!("Skipping setup, as there are no files in {}", source_dir.to_string_lossy());
+        println!(
+            "Skipping setup, as there are no files in {}",
+            source_dir.to_string_lossy()
+        );
     }
     Ok(())
 }

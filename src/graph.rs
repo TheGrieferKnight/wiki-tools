@@ -249,7 +249,11 @@ fn magic_bullet_references(magic: &Magic) -> Vec<(usize, i64, i64)> {
         .collect()
 }
 
-fn build_bullet(bullet_id: i64, consumption_type: Option<i64>, path: &mut HashSet<i64>) -> Result<BulletNode, AppError> {
+fn build_bullet(
+    bullet_id: i64,
+    consumption_type: Option<i64>,
+    path: &mut HashSet<i64>,
+) -> Result<BulletNode, AppError> {
     if !path.insert(bullet_id) {
         return Ok(BulletNode::cycle(bullet_id));
     }
@@ -261,10 +265,14 @@ fn build_bullet(bullet_id: i64, consumption_type: Option<i64>, path: &mut HashSe
     result
 }
 
-fn build_bullet_inner(bullet_id: i64, consumption_type: Option<i64>, path: &mut HashSet<i64>) -> Result<BulletNode, AppError> {
+fn build_bullet_inner(
+    bullet_id: i64,
+    consumption_type: Option<i64>,
+    path: &mut HashSet<i64>,
+) -> Result<BulletNode, AppError> {
     let bullet = find_bullet(&SearchField::ID(bullet_id))?;
 
-    let atk_param = if bullet.atk_id_bullet <= 1  {
+    let atk_param = if bullet.atk_id_bullet <= 1 {
         None
     } else {
         let atk_param = find_atk_param_pc(&SearchField::ID(bullet.atk_id_bullet))?;
@@ -298,7 +306,9 @@ fn build_bullet_inner(bullet_id: i64, consumption_type: Option<i64>, path: &mut 
         });
     }
 
-    if /*bullet.launch_condition_type == 0 &&*/ hit_bullet_id >= 0 {
+    if
+    /*bullet.launch_condition_type == 0 &&*/
+    hit_bullet_id >= 0 {
         let child = build_bullet(hit_bullet_id, None, path)?;
 
         node.children.push(BulletEdge {

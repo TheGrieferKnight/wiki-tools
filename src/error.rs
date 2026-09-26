@@ -11,7 +11,9 @@ pub enum AppError {
     Io(#[from] std::io::Error),
 
     #[error("Error when trying to convert magic.dot: {exit_status}")]
-    ExitStatusError{ exit_status: std::process::ExitStatus },
+    ExitStatusError {
+        exit_status: std::process::ExitStatus,
+    },
 
     #[error("no {record_type} record matched {field}")]
     NotFound {
@@ -32,7 +34,7 @@ pub enum AppError {
     GraphCycle { kind: &'static str, id: i64 },
 
     #[error("Unexpected argument {args:?} found.")]
-    UnexpectedArgs { args : Vec<String>},
+    UnexpectedArgs { args: Vec<String> },
 
     #[error("Usage: wiki-tools \"<spell name>\"")]
     NoArgs,

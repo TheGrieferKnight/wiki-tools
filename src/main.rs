@@ -35,8 +35,7 @@ async fn run() -> Result<(), AppError> {
             let graph = build_magic_graph(SearchField::Name(spell_name))?;
             let dot = graph.to_dot();
 
-            std::fs::write("magic.dot", dot)
-                .map_err(AppError::from)?;
+            std::fs::write("magic.dot", dot).map_err(AppError::from)?;
 
             Ok(())
         })
@@ -52,7 +51,10 @@ async fn run() -> Result<(), AppError> {
 
     let output = if cfg!(target_os = "windows") {
         std::process::Command::new("cmd")
-            .args(["/C", ".\\tools.\\graphviz\\windows-x64\\dot.exe -Tsvg magic.dot -o magic.svg"])
+            .args([
+                "/C",
+                ".\\tools.\\graphviz\\windows-x64\\dot.exe -Tsvg magic.dot -o magic.svg",
+            ])
             .output()
             .expect("failed to execute process")
     } else {
@@ -64,7 +66,9 @@ async fn run() -> Result<(), AppError> {
     };
 
     if !output.status.success() {
-        return Err(AppError::ExitStatusError { exit_status: output.status })
+        return Err(AppError::ExitStatusError {
+            exit_status: output.status,
+        });
     }
 
     println!("Successfully converted magic.dot to magic.svg");
@@ -93,12 +97,14 @@ async fn run() -> Result<(), AppError> {
 
     std::fs::write("magic.dot", dot).map_err(AppError::from)?;
 
-
     println!("Spell has been found and processed.");
 
     let output = if cfg!(target_os = "windows") {
         std::process::Command::new("cmd")
-            .args(["/C", ".\\tools\\graphviz\\windows-x64\\dot.exe -Tsvg magic.dot -o magic.svg"])
+            .args([
+                "/C",
+                ".\\tools\\graphviz\\windows-x64\\dot.exe -Tsvg magic.dot -o magic.svg",
+            ])
             .output()
             .expect("failed to execute process")
     } else {
@@ -110,7 +116,9 @@ async fn run() -> Result<(), AppError> {
     };
 
     if !output.status.success() {
-        return Err(AppError::ExitStatusError { exit_status: output.status })
+        return Err(AppError::ExitStatusError {
+            exit_status: output.status,
+        });
     }
 
     println!("Successfully converted magic.dot to magic.svg");

@@ -64,8 +64,6 @@ pub fn write_bullet_text(
         )?;
     }
 
-
-
     if let Some(atk_param) = &bullet.atk_param {
         let atk = &atk_param.value;
         let atk_indent = "  ".repeat(depth + 1);

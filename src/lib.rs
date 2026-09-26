@@ -14,7 +14,7 @@ pub use graph::MagicGraph;
 pub use records::SearchField;
 pub use setup::setup_csv;
 
-pub fn build_magic_graph(search_field: SearchField) ->Result<MagicGraph, AppError> {
+pub fn build_magic_graph(search_field: SearchField) -> Result<MagicGraph, AppError> {
     let magic = find_magic(&search_field)?;
 
     MagicGraph::build(magic.id)
