@@ -1,4 +1,7 @@
-use std::{env, thread};
+use std::env;
+
+#[cfg(debug_assertions)]
+use std::thread;
 
 use wiki_tools::{AppError, SearchField, build_magic_graph, setup_csv};
 

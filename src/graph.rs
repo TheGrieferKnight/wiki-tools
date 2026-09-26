@@ -62,8 +62,8 @@ impl BulletRelation {
             Self::MagicReference { reference_index } => {
                 format!("magic ref_id{reference_index}")
             }
-            Self::IntervalEmitter => "interval emitter".to_owned(),
-            Self::HitBullet => "hit bullet".to_owned(),
+            Self::IntervalEmitter => "emits".to_owned(),
+            Self::HitBullet => "on hit creates".to_owned(),
         }
     }
 }

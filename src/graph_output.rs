@@ -138,25 +138,52 @@ pub fn write_dot_edge(
             .as_ref()
             .expect("non-cycle bullet must have a value");
 
-        if value.interval_create_bullet_id != -1 {
+        let interval = if value.interval_create_bullet_id != -1 {
             format!(
-                "Bullet {}\\n{}\\natkId_Bullet: {}\\nConsumption Type: {:?} \\nInterval Min: {} \\nInterval Max: {}",
-                child.id,
-                escape_dot(&value.name),
-                value.atk_id_bullet,
-                child.cons_type,
-                value.interval_create_time_min,
-                value.interval_create_time_max
+                "\\nInterval Min/Max: {}/{}",
+                value.interval_create_time_min, value.interval_create_time_max
             )
         } else {
+            String::new()
+        };
+
+        let count = if value.num_shoot != 1 {
+            format!("\\nBullet Count {}", value.num_shoot)
+        } else {
+            String::new()
+        };
+
+        let consumption_type = match child.cons_type {
+            Some(number) => match number {
+                0 => "\\nConsumption Type: Default".to_owned(),
+                1 => "\\nConsumption Type: Charged".to_owned(),
+                2 => "\\nConsumption Type: None".to_owned(),
+                _ => format!("\\nConsumption Type: Unknown, {number}"),
+            },
+            None => String::new(),
+        };
+
+        let damage_hit_duration = if value.dmg_hit_record_life_time != 0f64 {
             format!(
-                "Bullet {}\\n{}\\natkId_Bullet: {}\\nConsumption Type: {:?}",
-                child.id,
-                escape_dot(&value.name),
-                value.atk_id_bullet,
-                child.cons_type
+                "\\n Can deal damage every {:.1$} seconds",
+                value.dmg_hit_record_life_time,
+                3 // 3 = number of decimal places
             )
-        }
+        } else {
+            String::new()
+        };
+
+        format!(
+            "Bullet {} \\n{} \\natkId_Bullet: {} {} {} {} \\nLife time: {} {}",
+            child.id,
+            escape_dot(&value.name),
+            value.atk_id_bullet,
+            consumption_type,
+            count,
+            interval,
+            value.life,
+            damage_hit_duration
+        )
     };
 
     writeln!(
@@ -194,7 +221,7 @@ pub fn write_dot_edge(
         writeln!(
             output,
             "    {current_id} -> {atk_node_id} \
-             [label=\"attack params\"];"
+             [label=\"has Attack Param\"];"
         )
         .unwrap();
 
@@ -230,7 +257,7 @@ pub fn write_dot_edge(
         writeln!(
             output,
             "    {atk_node_id} -> {damage_node_id} \
-             [label=\"damage\"];"
+             [label=\"deals damage\"];"
         )
         .unwrap();
     }
