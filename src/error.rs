@@ -1,6 +1,6 @@
 use thiserror::Error;
 
-use crate::records::RecordKind;
+use crate::{SpellBasics, records::RecordKind};
 
 #[derive(Debug, Error)]
 pub enum AppError {
@@ -20,6 +20,9 @@ pub enum AppError {
         record_type: &'static str,
         field: String,
     },
+
+    #[error("multiple Magic records matched spell '{name}'")]
+    AmbiguousSpell { name: String, first: SpellBasics },
 
     #[error("expected a {expected} record, got {actual:?}")]
     WrongRecordType {

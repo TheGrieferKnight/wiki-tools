@@ -6,6 +6,7 @@ pub mod graph_output;
 pub mod models;
 pub mod records;
 pub mod setup;
+pub mod spell_basics;
 pub mod traits;
 
 pub use csv_io::{find_atk_param_pc, find_bullet, find_magic};
@@ -13,6 +14,7 @@ pub use error::AppError;
 pub use graph::MagicGraph;
 pub use records::SearchField;
 pub use setup::setup_csv;
+pub use spell_basics::{SpellBasics, find_spell_basics};
 
 pub fn build_magic_graph(search_field: SearchField) -> Result<MagicGraph, AppError> {
     let magic = find_magic(&search_field)?;
