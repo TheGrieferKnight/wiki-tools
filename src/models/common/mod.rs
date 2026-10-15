@@ -15,7 +15,7 @@ pub mod bullet;
 // pub mod equip_param_custom_weapon;
 // pub mod equip_param_gem;
 // pub mod equip_param_goods;
-// pub mod equip_param_protector;
+pub mod equip_param_protector;
 // pub mod equip_param_weapon;
 // pub mod game_area_param;
 // pub mod item_lot_param_enemy;

@@ -1,5 +1,7 @@
+pub mod armor;
 pub mod constants;
 pub mod csv_io;
+pub mod dds;
 pub mod error;
 pub mod graph;
 pub mod graph_output;

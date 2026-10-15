@@ -16,7 +16,12 @@ incremental = false
 
 [dependencies]
 csv = { version = "1.4.0", default-features = false }
+ddsfile = "0.6.0"
 futures = { version = "0.3.34", features = ["alloc"], default-features = false }
+image = "0.25.10"
+reqwest = { version = "0.13.5", features = ["blocking", "json", "multipart", "cookies", "query", "form", "stream"] }
 serde = { version="1.0.229", features = ["derive"], default-features = false }
+serde_json = "1.0.154"
+texture2ddecoder = "0.1.2"
 thiserror = { version = "2.0.20", features = ["std"], default-features = false }
-tokio = { version = "1.53.1", features = ["fs", "macros", "rt-multi-thread"], default-features = false }
+tokio = { version = "1.53.1", features = ["fs", "macros", "process", "rt-multi-thread", "sync"], default-features = false }

@@ -3,7 +3,7 @@ use std::env;
 #[cfg(debug_assertions)]
 use std::thread;
 
-use wiki_tools::{AppError, SearchField, build_magic_graph, setup_csv};
+use wiki_tools::{AppError, SearchField, armor::cache_csv, build_magic_graph, setup_csv};
 
 #[tokio::main]
 async fn main() {
@@ -18,6 +18,10 @@ async fn run() -> Result<(), AppError> {
     setup_csv().await?;
 
     let stack_size = 8 * 1024 * 1024; // Set stack size to 8mb since some Spells overflow the 1mb standard stack size limit *COUGH* Beast Claw *COUGH COUGH* Nail Volley
+
+    let _ = cache_csv().await?;
+
+    panic!("Dev: Just testing.");
 
     let args: Vec<String> = env::args().collect();
 
@@ -82,6 +86,10 @@ async fn run() -> Result<(), AppError> {
 #[cfg(not(debug_assertions))]
 async fn run() -> Result<(), AppError> {
     setup_csv().await?;
+
+    let _ = cache_csv().await?;
+
+    panic!("Dev: Just testing.");
 
     let args: Vec<String> = env::args().collect();
 

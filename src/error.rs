@@ -10,6 +10,11 @@ pub enum AppError {
     #[error("I/O error: {0}")]
     Io(#[from] std::io::Error),
 
+    #[error("Reqwest error: {0}")]
+    Reqwest(#[from] reqwest::Error),
+    #[error("serde_json error: {0}")]
+    SerdeJson(#[from] serde_json::Error),
+
     #[error("Error when trying to convert magic.dot: {exit_status}")]
     ExitStatusError {
         exit_status: std::process::ExitStatus,
@@ -21,14 +26,14 @@ pub enum AppError {
         field: String,
     },
 
-    #[error("multiple Magic records matched spell '{name}'")]
-    AmbiguousSpell { name: String, first: SpellBasics },
-
     #[error("expected a {expected} record, got {actual:?}")]
     WrongRecordType {
         expected: &'static str,
         actual: RecordKind,
     },
+
+    #[error("multiple Magic records matched spell '{name}'")]
+    AmbiguousSpell { name: String, first: SpellBasics },
 
     #[error("record conversion failed: {0}")]
     RecordConversion(#[from] RecordConversionError),
@@ -41,6 +46,9 @@ pub enum AppError {
 
     #[error("Usage: wiki-tools \"<spell name>\"")]
     NoArgs,
+
+    #[error("{message}")]
+    General { message: String },
 
     #[error("{message}")]
     WorkerPanicked { message: String },
